@@ -20,6 +20,12 @@
     android:title="@string/remix_settings_title" >
 
     <PreferenceScreen
+        android:key="remix_interface_settings"
+        android:title="@string/remix_interface_settings_title"
+        android:fragment="org.dud.remixsettings.RemixInterfaceSettings"
+        android:icon="@drawable/ic_remix_interface_settings" />
+
+    <PreferenceScreen
         android:key="hfm_settings"
         android:title="@string/hfm_pref_screen_title"
         android:fragment="com.android.settings.liquid.hfm.HfmSettings"

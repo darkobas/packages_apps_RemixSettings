@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="remix_interface_settings"
+    android:title="@string/remix_interface_settings_title">
+
+    <PreferenceCategory
+    android:key="status_bar_settings"
+    android:title="@string/status_bar_title" />
+
+    <org.dud.remixsettings.SystemSettingSwitchPreference
+        android:key="status_bar_brightness_control"
+        android:title="@string/status_bar_toggle_brightness"
+        android:summary="@string/status_bar_toggle_brightness_summary"
+        android:defaultValue="false" />
+
+</PreferenceScreen>
