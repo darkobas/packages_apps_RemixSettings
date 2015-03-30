@@ -65,6 +65,7 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
 //import com.android.settings.preference.SystemCheckBoxPreference;
+import org.omnirom.omnigears.brightness.ButtonBacklightBrightness;
 
 public class ButtonSettings extends SettingsPreferenceFragment implements OnPreferenceChangeListener, Indexable {
 
@@ -98,6 +99,9 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
     private static final String KEYS_ASSIST_LONG_PRESS = "keys_assist_long_press";
     private static final String KEYS_APP_SWITCH_PRESS = "keys_app_switch_press";
     private static final String KEYS_APP_SWITCH_LONG_PRESS = "keys_app_switch_long_press";
+
+    private static final String KEY_BUTTON_BACKLIGHT = "button_backlight";
+
 
 //    private static final String VIRTUAL_KEY_HAPTIC_FEEDBACK = "virtual_key_haptic_feedback";
 //    private static final String FORCE_SHOW_OVERFLOW_MENU = "force_show_overflow_menu";
@@ -440,6 +444,13 @@ public class ButtonSettings extends SettingsPreferenceFragment implements OnPref
             mEnableCustomBindings.setChecked((Settings.System.getInt(resolver,
                     Settings.System.HARDWARE_KEY_REBINDING, 0) == 1));
             mEnableCustomBindings.setOnPreferenceChangeListener(this);
+
+            final ButtonBacklightBrightness backlight =
+                    (ButtonBacklightBrightness) findPreference(KEY_BUTTON_BACKLIGHT);
+            if (!backlight.isButtonSupported()) {
+                prefScreen.removePreference(backlight);
+            }
+
 
 //            Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 //            if (vibrator == null || !vibrator.hasVibrator()) {
