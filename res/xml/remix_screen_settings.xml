@@ -22,4 +22,9 @@
         android:summary="@string/lcd_density_summary"
         android:persistent="false" />
 
+    <PreferenceScreen
+        android:key="lock_screen_weather_settings"
+        android:title="@string/lock_screen_weather_settings_title"
+	android:summary="@string/lock_screen_weather_settings_summary"
+        android:fragment="org.dud.remixsettings.LockScreenWeatherSettings" />
 </PreferenceScreen>
