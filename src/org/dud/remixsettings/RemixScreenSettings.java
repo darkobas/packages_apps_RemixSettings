@@ -40,10 +40,10 @@ import android.widget.EditText;
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
-public class DisplaySettings extends SettingsPreferenceFragment implements
+public class RemixScreenSettings extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
-    private static final String TAG = "DisplaySettings";
+    private static final String TAG = "RemixScreenSettings";
 
     private static final int DIALOG_DENSITY = 0;
     private static final int DIALOG_DENSITY_WARNING = 1;
@@ -57,7 +57,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        addPreferencesFromResource(R.xml.remix_display_settings);
+        addPreferencesFromResource(R.xml.remix_screen_settings);
 
         mContext = getActivity().getApplicationContext();
         int newDensityValue;

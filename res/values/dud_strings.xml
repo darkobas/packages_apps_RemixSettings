@@ -39,8 +39,8 @@
     <string name="status_bar_toggle_brightness_summary">Adjust brightness by sliding across the status bar</string>
 
     <!-- DPI settings -->
-    <string name="display_settings">Display</string>
-    <string name="display_settings_title">Display settings</string>
+    <string name="remix_screen_settings">Screen and Lockscreen</string>
+    <string name="remix_screen_settings_title">Screen and lockscreen settings</string>
     <string name="lcd_density">LCD density</string>
     <string name="dialog_title_lcd_density">LCD density</string>
     <string name="lcd_density_summary">xxx DPI</string>

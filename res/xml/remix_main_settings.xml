@@ -32,9 +32,9 @@
         android:icon="@drawable/remix_hfm" />
 
     <PreferenceScreen
-         android:key="display_settings"
-         android:fragment="org.dud.remixsettings.DisplaySettings"
-         android:title="@string/display_settings_title"
+         android:key="remix_screen_settings"
+         android:fragment="org.dud.remixsettings.RemixScreenSettings"
+         android:title="@string/remix_screen_settings_title"
          android:icon="@drawable/ic_settings_display" />
 
 </PreferenceScreen>
