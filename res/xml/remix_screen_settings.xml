@@ -27,4 +27,9 @@
         android:title="@string/lock_screen_weather_settings_title"
 	android:summary="@string/lock_screen_weather_settings_summary"
         android:fragment="org.dud.remixsettings.LockScreenWeatherSettings" />
+
+    <org.dud.remixsettings.SecureSettingSwitchPreference
+        android:key="lockscreen_visualizer"
+        android:title="@string/lockscreen_visualizer_title"
+        android:defaultValue="true" />
 </PreferenceScreen>
