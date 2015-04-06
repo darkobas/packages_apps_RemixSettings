@@ -15,6 +15,11 @@
         android:summary="@string/status_bar_toggle_brightness_summary"
         android:defaultValue="false" />
 
+    <org.dud.remixsettings.SystemSettingSwitchPreference
+        android:key="qs_show_brightness_slider"
+        android:title="@string/qs_brightness_slider_title"
+        android:defaultValue="true"/>
+
     <PreferenceCategory
         android:key="more_cat_lock_clock"
         android:title="@string/lock_clock_title">
