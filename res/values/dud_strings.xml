@@ -19,6 +19,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="remix_interface_settings_title">Interface Settings</string>
+    <string name="remix_sound_settings_title">Remix Sound Settings</string>
     <string name="status_bar_title">Status bar settings</string>
     <!-- General strings -->
     <string name="attention">ATTENTION!</string>
@@ -184,4 +185,6 @@
     <string name="status_bar_battery_percentage_text_inside">Inside the icon</string>
     <string name="status_bar_battery_percentage_text_next">Next to the icon</string>
 
+    <string name="interruptions_ignore_while_media_title">Prevent audio ducking</string>
+    <string name="interruptions_ignore_while_media_summary">Do not reduce media playback volume when a notification arrives</string>
 </resources>

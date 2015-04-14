@@ -19,6 +19,12 @@
     xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
     android:title="@string/remix_settings_title" >
 
+<!--    <PreferenceScreen
+        android:key="remix_sound_settings"
+        android:title="@string/remix_sound_settings_title"
+        android:fragment="org.dud.remixsettings.RemixSoundSettings"
+        android:icon="@drawable/ic_remix_sound_settings" />
+-->
     <PreferenceScreen
         android:key="remix_interface_settings"
         android:title="@string/remix_interface_settings_title"
