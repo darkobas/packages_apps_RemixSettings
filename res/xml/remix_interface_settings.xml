@@ -21,6 +21,11 @@
         android:title="@string/qs_brightness_slider_title"
         android:defaultValue="true"/>
 
+    <org.dud.remixsettings.SystemSettingSwitchPreference
+        android:key="double_tap_sleep_gesture"
+        android:title="@string/double_tap_to_sleep_title"
+        android:summary="@string/double_tap_to_sleep_summary"
+        android:defaultValue="true" />
 
     <PreferenceCategory
     android:key="recents_panel"
