@@ -16,26 +16,24 @@
 
 package org.dud.remixsettings;
 
-import android.app.ActivityManagerNative;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.IActivityManager;
+import android.app.ActivityManagerNative;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.ServiceManager;
-import android.os.SystemProperties;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
-import android.text.Editable;
+import android.view.Display;
+import android.view.IWindowManager;
+import android.view.WindowManager;
+import android.view.WindowManagerGlobal;
+import android.view.WindowManagerImpl;
+import android.widget.Toast;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
@@ -60,23 +58,41 @@ public class RemixScreenSettings extends SettingsPreferenceFragment implements
         addPreferencesFromResource(R.xml.remix_screen_settings);
 
         mContext = getActivity().getApplicationContext();
-        int newDensityValue;
 
         mLcdDensityPreference = (ListPreference) findPreference(KEY_LCD_DENSITY);
-        int defaultDensity = DisplayMetrics.DENSITY_DEVICE;
-        String[] densityEntries = new String[9];
-        for (int idx = 0; idx < 8; ++idx) {
-            int pct = (75 + idx*5);
-            densityEntries[idx] = Integer.toString(defaultDensity * pct / 100);
-        }
-        densityEntries[8] = getString(R.string.custom_density);
-        int currentDensity = DisplayMetrics.DENSITY_CURRENT;
-        mLcdDensityPreference.setEntries(densityEntries);
-        mLcdDensityPreference.setEntryValues(densityEntries);
-        mLcdDensityPreference.setValue(String.valueOf(currentDensity));
-        mLcdDensityPreference.setOnPreferenceChangeListener(this);
-        updateLcdDensityPreferenceDescription(currentDensity);
+        if (mLcdDensityPreference != null) {
+            int defaultDensity = getDefaultDensity();
+            int currentDensity = getCurrentDensity();
+            if (currentDensity < 10 || currentDensity >= 1000) {
+                // Unsupported value, force default
+                currentDensity = defaultDensity;
+            }
 
+            int factor = defaultDensity >= 480 ? 40 : 20;
+            int minimumDensity = defaultDensity - 4 * factor;
+            int currentIndex = -1;
+            String[] densityEntries = new String[7];
+            String[] densityValues = new String[7];
+            for (int idx = 0; idx < 7; ++idx) {
+                int val = minimumDensity + factor * idx;
+                int valueFormatResId = val == defaultDensity
+                        ? R.string.lcd_density_default_value_format
+                        : R.string.lcd_density_value_format;
+
+                densityEntries[idx] = getString(valueFormatResId, val);
+                densityValues[idx] = Integer.toString(val);
+                if (currentDensity == val) {
+                    currentIndex = idx;
+                }
+            }
+            mLcdDensityPreference.setEntries(densityEntries);
+            mLcdDensityPreference.setEntryValues(densityValues);
+            if (currentIndex != -1) {
+                mLcdDensityPreference.setValueIndex(currentIndex);
+            }
+            mLcdDensityPreference.setOnPreferenceChangeListener(this);
+            updateLcdDensityPreferenceDescription(currentDensity);
+        }
     }
 
     @Override
@@ -84,150 +100,84 @@ public class RemixScreenSettings extends SettingsPreferenceFragment implements
         super.onResume();
     }
 
+    private int getDefaultDensity() {
+        IWindowManager wm = IWindowManager.Stub.asInterface(ServiceManager.checkService(
+                Context.WINDOW_SERVICE));
+        try {
+            return wm.getInitialDisplayDensity(Display.DEFAULT_DISPLAY);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return DisplayMetrics.DENSITY_DEVICE;
+    }
+
+    private int getCurrentDensity() {
+        IWindowManager wm = IWindowManager.Stub.asInterface(ServiceManager.checkService(
+                Context.WINDOW_SERVICE));
+       try {
+            return wm.getBaseDisplayDensity(Display.DEFAULT_DISPLAY);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return DisplayMetrics.DENSITY_DEVICE;
+    }
+
     public boolean onPreferenceChange(Preference preference, Object objValue) {
         final String key = preference.getKey();
         if (KEY_LCD_DENSITY.equals(key)) {
-            String strValue = (String) objValue;
-            if (strValue.equals(getResources().getString(R.string.custom_density))) {
-                showDialog(DIALOG_DENSITY);
-            } else {
+            try {
                 int value = Integer.parseInt((String) objValue);
-                writeLcdDensityPreference(value);
+                writeLcdDensityPreference(preference.getContext(), value);
                 updateLcdDensityPreferenceDescription(value);
+            } catch (NumberFormatException e) {
+                Log.e(TAG, "could not persist display density setting", e);
             }
         }
-        return false;
+        return true;
     }
 
     private void updateLcdDensityPreferenceDescription(int currentDensity) {
-        ListPreference preference = mLcdDensityPreference;
-        String summary;
-        if (currentDensity < 10 || currentDensity >= 1000) {
-            // Unsupported value 
-            summary = "";
-        }
-        else {
-            summary = Integer.toString(currentDensity) + " DPI";
-        }
-        preference.setSummary(summary);
+        final int summaryResId = currentDensity == getDefaultDensity()
+                ? R.string.lcd_density_default_value_format : R.string.lcd_density_value_format;
+        mLcdDensityPreference.setSummary(getString(summaryResId, currentDensity));
     }
 
-    public void writeLcdDensityPreference(int value) {
-        // Set the value clicked on the list
-        try {
-            SystemProperties.set("persist.sys.lcd_density", Integer.toString(value));
-        }
-        catch (Exception e) {
-            Log.w(TAG, "Unable to save LCD density");
-        }
-        // Show a dialog before restart
-        // and let the user know of it
-        showDialogInner(DIALOG_DENSITY_WARNING);
-
-    }
-
-    // Restart the system to apply changes
-    static void systemRestart() {
-        try {
-            final IActivityManager am = ActivityManagerNative.asInterface(ServiceManager.checkService("activity"));
-            if (am != null) {
-                am.restart();
+    private void writeLcdDensityPreference(final Context context, final int density) {
+        final IActivityManager am = ActivityManagerNative.asInterface(
+                ServiceManager.checkService("activity"));
+        final IWindowManager wm = IWindowManager.Stub.asInterface(ServiceManager.checkService(
+                Context.WINDOW_SERVICE));
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                ProgressDialog dialog = new ProgressDialog(context);
+                dialog.setMessage(getResources().getString(R.string.restarting_ui));
+                dialog.setCancelable(false);
+                dialog.setIndeterminate(true);
+                dialog.show();
             }
-        }
-        catch (RemoteException e) {
-            Log.e(TAG, "Failed to restart");
-        }
-    }
-
-    public Dialog onCreateDialog(int dialogId) {
-        LayoutInflater factory = LayoutInflater.from(mContext);
-
-        switch (dialogId) {
-            case DIALOG_DENSITY:
-                final View textEntryView = factory.inflate(R.layout.alert_dialog_text_entry, null);
-                return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.custom_density_dialog_title)
-                .setMessage(getResources().getString(R.string.custom_density_dialog_summary))
-                .setView(textEntryView)
-                .setPositiveButton(getResources().getString(R.string.set_custom_density_set), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        EditText dpi = (EditText) textEntryView.findViewById(R.id.dpi_edit);
-                        Editable text = dpi.getText();
-                        Log.i(TAG, text.toString());
-                        String editText = dpi.getText().toString();
-                        // Set the value of the text box
-                        try {
-                            SystemProperties.set("persist.sys.lcd_density", editText);
-                        }
-                        catch (Exception e) {
-                            Log.w(TAG, "Unable to save LCD density");
-                        }
-                        // Show a dialog before restart
-                        // and let the user know of it
-                        showDialogInner(DIALOG_DENSITY_WARNING);
-
-                    }
-
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                })
-                .create();
-        }
-        return null;
-    }
-
-    private void showDialogInner(int id) {
-        DialogFragment newFragment = MyAlertDialogFragment.newInstance(id);
-        newFragment.setTargetFragment(this, 0);
-        newFragment.show(getFragmentManager(), "dialog " + id);
-    }
-
-    public static class MyAlertDialogFragment extends DialogFragment {
-
-        public static MyAlertDialogFragment newInstance(int id) {
-            MyAlertDialogFragment frag = new MyAlertDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt("id", id);
-            frag.setArguments(args);
-            return frag;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            int id = getArguments().getInt("id");
-            switch (id) {
-                case DIALOG_DENSITY_WARNING:
-                    return new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.attention)
-                    .setMessage(R.string.custom_density_warning)
-                    .setNegativeButton(R.string.dialog_cancel,
-                        new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // If canceled, set the density value to null avoiding
-                            // the storage of the clicked value and forward change
-                            // to it in a next restart of the system 
-                            try {
-                                SystemProperties.set("persist.sys.lcd_density", null);
-                            } catch (Exception e) {
-                                Log.w(TAG, "Unable to save LCD density");
-                            }
-
-                            dialog.cancel();
-                        }
-                    })
-                    .setPositiveButton(R.string.dialog_restart,
-                        new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // If resatrt is the choosen one do it and apply the value
-                            systemRestart();
-                        }
-                    })
-                    .create();
+            @Override
+            protected Void doInBackground(Void... params) {
+                // Give the user a second to see the dialog
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    // Ignore
+                }
+                try {
+                    wm.setForcedDisplayDensity(Display.DEFAULT_DISPLAY, density);
+                } catch (RemoteException e) {
+                    Log.e(TAG, "Failed to set density to " + density, e);
+                }
+                // Restart the UI
+                try {
+                    am.restart();
+                } catch (RemoteException e) {
+                   Log.e(TAG, "Failed to restart");
+                }
+                return null;
             }
-            throw new IllegalArgumentException("unknown id " + id);
-        }
+        };
+        task.execute();
     }
 }
