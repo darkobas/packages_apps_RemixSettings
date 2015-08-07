@@ -62,6 +62,17 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="heads_up"
+        android:title="@string/heads_up_title">
+        <SwitchPreference
+            android:key="heads_up_floating"
+            android:title="@string/heads_up_floating_window_title"
+            android:summary="@string/heads_up_floating_window_summary"
+            android:persistent="false"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="more_cat_lock_clock"
         android:title="@string/lock_clock_title">
 

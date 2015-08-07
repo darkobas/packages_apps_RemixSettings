@@ -67,20 +67,9 @@
     <string name="remix_screen_settings_title">Screen and lockscreen settings</string>
     <string name="lcd_density">LCD density</string>
     <string name="dialog_title_lcd_density">LCD density</string>
-    <string name="lcd_density_summary">xxx DPI</string>
-    <string name="custom_density_title">Change to whatever you like</string>
-    <string name="custom_density_summary">If you ever have compatibility issues with the Play Store, be sure to doublecheck if a Multi-DPI Play Store is installed</string>
-    <string name="custom_density_summary_invalid">"INVALID DENSITY!"</string>
-    <string name="custom_density">Custom</string>
-    <string name="set_custom_density_title">Set custom density</string>
-    <string name="set_custom_density_set">Set</string>
-    <string name="custom_density_dialog_title">WARNING!</string>
-    <string name="custom_density_dialog_summary">Changing your default LCD density can sometimes cause certain apps to not function properly and/or the playstore to show apps being incompatible with your device"</string>
-    <string name="dpi">DPI</string>
-    <string name="dialog_restart">Restart</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="custom_density_warning">Restart the system and apply selected density?</string>
-
+    <string name="lcd_density_value_format">%d DPI</string>
+    <string name="lcd_density_default_value_format">%d DPI (default)</string>
+    <string name="restarting_ui">Restarting UI\u2026</string>
     <!-- Weather settings -->
     <string name="weather_show_weather_title">Show weather</string>
     <string name="weather_show_weather_summary">Enable to show weather informations</string>
@@ -183,4 +172,10 @@
     <string name="picker_activities">Activities</string>
     <string name="select_custom_app_title">Select custom app</string>
     <string name="select_custom_activity_title">Select custom activity</string>
+
+    <string name="profile_applist_title">Apps</string>
+    <!-- Heads Up Floating Mode -->
+    <string name="heads_up_title">Heads up</string>
+    <string name="heads_up_floating_window_title">Float mode</string>
+    <string name="heads_up_floating_window_summary">Longpress and release to open in float mode when not on home screen</string> 
 </resources>

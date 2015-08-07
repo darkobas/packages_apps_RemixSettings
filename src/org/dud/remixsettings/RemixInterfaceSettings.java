@@ -44,8 +44,12 @@ public class RemixInterfaceSettings extends SettingsPreferenceFragment
     private static final String SHOW_CLEAR_ALL_RECENTS = "show_clear_all_recents";
     private static final String RECENTS_CLEAR_ALL_LOCATION = "recents_clear_all_location";
 
+    private static final String PREF_HEADS_UP_FLOATING = "heads_up_floating";
+
     private SwitchPreference mRecentsClearAll;
     private ListPreference mRecentsClearAllLocation;
+
+    private SwitchPreference mHeadsUpFloatingWindow;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -65,6 +69,11 @@ public class RemixInterfaceSettings extends SettingsPreferenceFragment
         mRecentsClearAllLocation.setValue(String.valueOf(location));
         mRecentsClearAllLocation.setOnPreferenceChangeListener(this);
         updateRecentsLocation(location);
+
+        mHeadsUpFloatingWindow = (SwitchPreference) findPreference(PREF_HEADS_UP_FLOATING);
+        mHeadsUpFloatingWindow.setChecked(Settings.System.getIntForUser(getContentResolver(),
+                Settings.System.HEADS_UP_FLOATING, 0, UserHandle.USER_CURRENT) == 1);
+        mHeadsUpFloatingWindow.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -80,6 +89,11 @@ public class RemixInterfaceSettings extends SettingsPreferenceFragment
             Settings.System.putIntForUser(getActivity().getContentResolver(),
                     Settings.System.RECENTS_CLEAR_ALL_LOCATION, location, UserHandle.USER_CURRENT);
             updateRecentsLocation(location);
+            return true;
+       } else if (preference == mHeadsUpFloatingWindow) {
+            Settings.System.putIntForUser(getContentResolver(),
+                    Settings.System.HEADS_UP_FLOATING,
+            (Boolean) newValue ? 1 : 0, UserHandle.USER_CURRENT);
             return true;
        }
         return false;
