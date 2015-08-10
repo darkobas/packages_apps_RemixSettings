@@ -181,4 +181,28 @@
     <!-- Double tap to sleep on lockscreen -->
     <string name="double_tap_sleep_anywhere_title">Double-tap to sleep</string>
     <string name="double_tap_sleep_anywhere_summary">Double tap lockscreen to put the device to sleep</string>
+    <!-- Double tap gesture anywhere on the lock screen put device to sleep -->
+    <string name="double_tap_sleep_anywhere_title">Double-tap to sleep anywhere</string>
+    <string name="double_tap_sleep_anywhere_summary">Double tap anywhere on the lockscreen to put the device to sleep</string>
+
+    <string name="longpress_lock_icon_to_sleep_title">Long press lock icon to sleep</string>
+    <string name="longpress_lock_icon_to_sleep_summary">This option will not work if both smart lock and accessibility touch exploration are enabled</string>
+ 
+    <string name="weather_hide_panel_title">Hide weather panel</string>
+    <string name="weather_hide_panel_dlg_title">Choose when the weather panel should be hidden</string>
+    <string name="weather_hide_panel_auto_title">Auto</string>
+    <string name="weather_hide_panel_custom_title">Custom</string>
+    <string name="weather_hide_panel_never_title">Never</string>
+    <string name="weather_hide_panel_auto_summary">The weather panel will be hidden, when the visible notifications will reach the maximum allowed notifications on the lock screen</string>
+    <string name="weather_hide_panel_custom_summary">The weather panel will be hidden, when the visible notifications will reach the choosen number of notifications (%s)</string>
+    <string name="weather_hide_panel_never_summary">The weather panel whon/`t be hidden</string>
+    <string name="weather_number_of_notifications_title">Number of notifications</string>
+    <string name="weather_number_of_notifications_dlg_title">Choose the number of notifications to hide the weather panel</string>
+    <string name="weather_number_of_notifications_always_title">Always</string>
+    <string name="weather_number_of_notifications_two_title">2</string>
+    <string name="weather_number_of_notifications_three_title">3</string>
+    <string name="weather_number_of_notifications_four_title">4</string>
+    <string name="weather_number_of_notifications_five_title">5</string>
+    <string name="weather_number_of_notifications_six_title">6</string>
+    <string name="weather_cat_notifications_title">Notifications</string> 
 </resources>
