@@ -27,11 +27,6 @@
         android:summary="@string/double_tap_to_sleep_summary"
         android:defaultValue="true" />
 
-    <org.dud.remixsettings.SystemSettingSwitchPreference
-        android:key="double_tap_sleep_anywhere"
-        android:title="@string/double_tap_sleep_anywhere_title"
-        android:summary="@string/double_tap_sleep_anywhere_summary" />
-
     <PreferenceCategory
     android:key="recents_panel"
     android:title="@string/recents_panel_settings" >
