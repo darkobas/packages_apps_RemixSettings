@@ -41,6 +41,6 @@
          android:key="remix_screen_settings"
          android:fragment="org.dud.remixsettings.RemixScreenSettings"
          android:title="@string/remix_screen_settings_title"
-         android:icon="@drawable/ic_settings_display_exposed" />
+         android:icon="@drawable/ic_settings_display" />
 
 </PreferenceScreen>
