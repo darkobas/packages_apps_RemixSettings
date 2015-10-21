@@ -1,3 +1,4 @@
+/*
 package org.dud.remixsettings;
 
 import android.annotation.Nullable;
@@ -231,3 +232,4 @@ public class LockscreenShortcuts extends Fragment implements View.OnClickListene
     }
 
 }
+*/

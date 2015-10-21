@@ -24,7 +24,6 @@
         android:title="@string/remix_sound_settings_title"
         android:fragment="org.dud.remixsettings.RemixSoundSettings"
         android:icon="@drawable/ic_remix_sound_settings" />
--->
     <PreferenceScreen
         android:key="remix_interface_settings"
         android:title="@string/remix_interface_settings_title"
@@ -43,4 +42,5 @@
          android:title="@string/remix_screen_settings_title"
          android:icon="@drawable/ic_settings_display" />
 
+-->
 </PreferenceScreen>
